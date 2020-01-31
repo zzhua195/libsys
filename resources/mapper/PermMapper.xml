@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzhua.mapper.PermMapper">
+  <resultMap id="BaseResultMap" type="com.zzhua.domain.Perm">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="permCode" jdbcType="VARCHAR" property="permcode" />
+    <result column="permName" jdbcType="VARCHAR" property="permname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, permCode, permName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from perm
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from perm
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zzhua.domain.Perm">
+    insert into perm (id, permCode, permName
+      )
+    values (#{id,jdbcType=INTEGER}, #{permcode,jdbcType=VARCHAR}, #{permname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzhua.domain.Perm">
+    insert into perm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="permcode != null">
+        permCode,
+      </if>
+      <if test="permname != null">
+        permName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="permcode != null">
+        #{permcode,jdbcType=VARCHAR},
+      </if>
+      <if test="permname != null">
+        #{permname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzhua.domain.Perm">
+    update perm
+    <set>
+      <if test="permcode != null">
+        permCode = #{permcode,jdbcType=VARCHAR},
+      </if>
+      <if test="permname != null">
+        permName = #{permname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzhua.domain.Perm">
+    update perm
+    set permCode = #{permcode,jdbcType=VARCHAR},
+      permName = #{permname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectPermsByUid" resultMap="BaseResultMap">
+        SELECT DISTINCT p.*  FROM user_role ur LEFT JOIN role_perm rp ON ur.rid = rp.rid
+        RIGHT JOIN perm p ON p.id = rp.pid WHERE ur.uid=#{uid};
+    </select>
+
+
+</mapper>

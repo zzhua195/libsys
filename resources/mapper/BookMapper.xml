@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzhua.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="com.zzhua.domain.Book">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bookCode" jdbcType="VARCHAR" property="bookcode" />
+    <result column="bookName" jdbcType="VARCHAR" property="bookname" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="isBorrow" jdbcType="INTEGER" property="isborrow" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="publishTime" jdbcType="DATE" property="publishtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bookCode, bookName, price, author, isBorrow, type, publishTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zzhua.domain.Book">
+    insert into book (id, bookCode, bookName, 
+      price, author, isBorrow, 
+      type, publishTime)
+    values (#{id,jdbcType=INTEGER}, #{bookcode,jdbcType=VARCHAR}, #{bookname,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{author,jdbcType=VARCHAR}, #{isborrow,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{publishtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzhua.domain.Book">
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bookcode != null">
+        bookCode,
+      </if>
+      <if test="bookname != null">
+        bookName,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="isborrow != null">
+        isBorrow,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="publishtime != null">
+        publishTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bookcode != null">
+        #{bookcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null">
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="isborrow != null">
+        #{isborrow,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="publishtime != null">
+        #{publishtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzhua.domain.Book">
+    update book
+    <set>
+      <if test="bookcode != null">
+        bookCode = #{bookcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bookname != null and bookname !=''">
+        bookName = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="isborrow != null">
+        isBorrow = #{isborrow,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="publishtime != null">
+        publishTime = #{publishtime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzhua.domain.Book">
+    update book
+    set bookCode = #{bookcode,jdbcType=VARCHAR},
+      bookName = #{bookname,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      author = #{author,jdbcType=VARCHAR},
+      isBorrow = #{isborrow,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      publishTime = #{publishtime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from book
+        <where>
+            <if test="bookname != null and bookname != '' ">
+                and bookName LIKE "%"#{bookname}"%"
+            </if>
+            <if test="author != null  and author != '' ">
+                and author = #{author}
+            </if>
+            <if test="isborrow != null">
+                and isBorrow = #{isborrow}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="starttime!=null">
+                and publishTime &gt; #{starttime}
+            </if>
+            <if test="endtime!=null">
+                and publishTime &lt; #{endtime}
+            </if>
+        </where>
+    </select>
+</mapper>
