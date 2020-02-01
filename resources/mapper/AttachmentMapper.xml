@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzhua.mapper.AttachmentMapper">
+  <resultMap id="BaseResultMap" type="com.zzhua.domain.Attachment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="filetype" jdbcType="VARCHAR" property="filetype" />
+    <result column="filesize" jdbcType="DOUBLE" property="filesize" />
+    <result column="uploader" jdbcType="VARCHAR" property="uploader" />
+    <result column="uploadtime" jdbcType="TIMESTAMP" property="uploadtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, realname, filename, filetype, filesize, uploader, uploadtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from attachment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from attachment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zzhua.domain.Attachment">
+    insert into attachment (id, realname, filename, 
+      filetype, filesize, uploader, 
+      uploadtime)
+    values (#{id,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, 
+      #{filetype,jdbcType=VARCHAR}, #{filesize,jdbcType=DOUBLE}, #{uploader,jdbcType=VARCHAR}, 
+      #{uploadtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzhua.domain.Attachment">
+    insert into attachment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="realname != null">
+        realname,
+      </if>
+      <if test="filename != null">
+        filename,
+      </if>
+      <if test="filetype != null">
+        filetype,
+      </if>
+      <if test="filesize != null">
+        filesize,
+      </if>
+      <if test="uploader != null">
+        uploader,
+      </if>
+      <if test="uploadtime != null">
+        uploadtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="filetype != null">
+        #{filetype,jdbcType=VARCHAR},
+      </if>
+      <if test="filesize != null">
+        #{filesize,jdbcType=DOUBLE},
+      </if>
+      <if test="uploader != null">
+        #{uploader,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadtime != null">
+        #{uploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzhua.domain.Attachment">
+    update attachment
+    <set>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="filetype != null">
+        filetype = #{filetype,jdbcType=VARCHAR},
+      </if>
+      <if test="filesize != null">
+        filesize = #{filesize,jdbcType=DOUBLE},
+      </if>
+      <if test="uploader != null">
+        uploader = #{uploader,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadtime != null">
+        uploadtime = #{uploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzhua.domain.Attachment">
+    update attachment
+    set realname = #{realname,jdbcType=VARCHAR},
+      filename = #{filename,jdbcType=VARCHAR},
+      filetype = #{filetype,jdbcType=VARCHAR},
+      filesize = #{filesize,jdbcType=DOUBLE},
+      uploader = #{uploader,jdbcType=VARCHAR},
+      uploadtime = #{uploadtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from attachment
+        <where>
+            <if test="realname != null and realname!=''">
+                and realname = "%"#{realname}"%"
+            </if>
+            <if test="filename != null and filename!=''">
+                and filename = "%"#{filename}"%"
+            </if>
+            <if test="filetype != null">
+                and filetype = #{filetype}
+            </if>
+            <if test="filesize != null">
+                and filesize = #{filesize}
+            </if>
+            <if test="uploader != null">
+                and uploader = #{uploader}
+            </if>
+        </where>
+    </select>
+</mapper>
