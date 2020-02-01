@@ -14,7 +14,7 @@
 </head>
 <body>
 <h3 align="center">图书馆藏</h3>
-<div align="center">${user.username},欢迎回来! <a href="/logout">注销</a> </div>
+<div align="center">${user.username},欢迎回来! <a href="/logout">注销</a> <a href="${pageContext.request.contextPath}/file/toFile">文档列表</a> </div>
 <div align="center">
     <form action="${pageContext.request.contextPath}/book/list" id="form01">
         书名: <input type="text" name="bookname" id="bookname" value="${bookVo.bookname}">

@@ -13,8 +13,8 @@ import java.util.List;
 
 public class ResponseEntity<T> {
 
-    private final static ResponseEntity SUCCESS = new ResponseEntity(true,"操作成功");
-    private final static ResponseEntity FAIL = new ResponseEntity(true,"操作失败");
+    public final static ResponseEntity SUCCESS = new ResponseEntity(true,"操作成功");
+    public final static ResponseEntity FAIL = new ResponseEntity(true,"操作失败");
 
     private boolean flag;//操作结果 true成功 false失败
     private String msg; //操作返回消息

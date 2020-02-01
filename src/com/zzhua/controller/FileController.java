@@ -33,6 +33,6 @@ public class FileController {
     @RequestMapping("upload")
     @ResponseBody
     public ResponseEntity upload(){
-        return
+        return ResponseEntity.SUCCESS;
     }
 }
