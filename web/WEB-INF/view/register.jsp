@@ -19,6 +19,7 @@
         <tr>
             <td>用户名</td>
             <td><input type="text" placeholder="输入一个用户名" name="username" value="${username}" id="username"></td>
+            <div id="msgDiv"></div>
         </tr>
         <tr>
             <td>密码</td>
@@ -52,6 +53,17 @@
             return false;
         }
 
+    });
+
+    $("#username").blur(function () {
+        $.post('/register/checkUsername',{username:$("#username").val()},function (flag) {
+            $("#msgDiv").html("");
+            if(flag){
+                $("#msgDiv").html("<font color='green'>该用户名可用</font>");
+            }else{
+                $("#msgDiv").html("<font color='red'>该用户名不可用</font>");
+            }
+        })
     });
 </script>
 

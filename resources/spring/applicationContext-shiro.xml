@@ -17,6 +17,8 @@
                 /register/toRegister=anon
                 <!--注册请求-->
                 /register/register=anon
+                <!--验证用户名存在-->
+                /register/checkUsername=anon
                 <!--注销-->
                 /logout=logout
                 <!--静态资源-->

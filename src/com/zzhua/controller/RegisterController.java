@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 
@@ -47,6 +48,17 @@ public class RegisterController {
         model.addAttribute("flag",true);
         model.addAttribute("successMsg","注册成功<a href='/login/toLogin'>请登录</a>");
         return "forward:toRegister";
+    }
+
+    @RequestMapping("checkUsername")
+    @ResponseBody
+    public boolean checkUsername(String username){
+        User user = userService.loginUser(username);
+        if(null==user){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
