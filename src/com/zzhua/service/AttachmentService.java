@@ -16,4 +16,7 @@ import java.util.List;
 public interface AttachmentService {
 
     List<Attachment> selectAll(Attachment attachment);
+
+    void addAttachment(Attachment attachment);
+
 }

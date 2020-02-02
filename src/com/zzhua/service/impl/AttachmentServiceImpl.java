@@ -26,4 +26,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     public List<Attachment> selectAll(Attachment attachment) {
         return attachmentMapper.selectAll(attachment);
     }
+
+    @Override
+    public void addAttachment(Attachment attachment) {
+        attachmentMapper.insertSelective(attachment);
+    }
 }

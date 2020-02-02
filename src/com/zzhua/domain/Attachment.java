@@ -17,6 +17,18 @@ public class Attachment {
 
     private Date uploadtime;
 
+    public Attachment(String realname, String filename, String filetype, Double filesize, String uploader, Date uploadtime) {
+        this.realname = realname;
+        this.filename = filename;
+        this.filetype = filetype;
+        this.filesize = filesize;
+        this.uploader = uploader;
+        this.uploadtime = uploadtime;
+    }
+
+    public Attachment() {
+    }
+
     public Integer getId() {
         return id;
     }
