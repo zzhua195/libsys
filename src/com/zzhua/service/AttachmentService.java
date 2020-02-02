@@ -19,4 +19,5 @@ public interface AttachmentService {
 
     void addAttachment(Attachment attachment);
 
+    Attachment selectById(Integer id);
 }

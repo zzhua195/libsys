@@ -4,6 +4,7 @@ package com.zzhua.controller;
 import com.zzhua.domain.Attachment;
 import com.zzhua.domain.User;
 import com.zzhua.service.AttachmentService;
+import com.zzhua.utils.DateUtil;
 import com.zzhua.utils.RandomUtil;
 import com.zzhua.utils.ResponseEntity;
 import org.apache.shiro.SecurityUtils;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -101,4 +103,42 @@ public class FileController {
 
         return ResponseEntity.SUCCESS;
     }
+
+    @PostMapping("download")
+    @ResponseBody
+    public ResponseEntity download(Integer id, HttpServletResponse response){
+        if(id==null){
+            return new ResponseEntity(false,"请选择你要下载的文件");
+        }
+        // 根据id获取文件的真实路径
+        Attachment attachment = attachmentService.selectById(id);
+        String realpath  = servletContext.getContextPath()+"/file"+ DateUtil.getDateString(new Date())+attachment.getFilename();
+        File file = new File(realpath);
+        if(!file.isFile()){
+            return new ResponseEntity(false,"找不到该文件了,请联系管理员");
+        }
+        try {
+
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("multipart/form-data");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + attachment.getRealname());
+            ServletOutputStream os = response.getOutputStream();
+
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[1024 * 1];
+            int len;
+            while((len=fis.read(bytes))!=-1){
+                os.write(bytes,0,len);
+            }
+            return new ResponseEntity(true,"下载成功");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.FAIL;
+
+    }
+
 }

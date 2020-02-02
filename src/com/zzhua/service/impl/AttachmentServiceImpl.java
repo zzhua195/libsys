@@ -31,4 +31,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     public void addAttachment(Attachment attachment) {
         attachmentMapper.insertSelective(attachment);
     }
+
+    @Override
+    public Attachment selectById(Integer id) {
+        return attachmentMapper.selectByPrimaryKey(id);
+    }
 }
