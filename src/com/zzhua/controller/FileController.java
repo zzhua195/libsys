@@ -21,6 +21,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -78,6 +79,9 @@ public class FileController {
 
             //获取随机文件名
             String realname = mf.getOriginalFilename();
+            if (!realname.contains(".")) {
+                return new ResponseEntity(false,"不支持该文件上传");
+            }
             String suffix = realname.substring(realname.lastIndexOf("."),realname.length());
             String filename = RandomUtil.getRandomNameByTime()+suffix;
 
@@ -104,7 +108,7 @@ public class FileController {
         return ResponseEntity.SUCCESS;
     }
 
-    @PostMapping("download")
+    @RequestMapping("download")
     @ResponseBody
     public ResponseEntity download(Integer id, HttpServletResponse response){
         if(id==null){
@@ -112,7 +116,8 @@ public class FileController {
         }
         // 根据id获取文件的真实路径
         Attachment attachment = attachmentService.selectById(id);
-        String realpath  = servletContext.getContextPath()+"/file"+ DateUtil.getDateString(new Date())+attachment.getFilename();
+        String virtualpath  = servletContext.getContextPath()+"/file/"+ DateUtil.getDateString(new Date())+"/"+attachment.getFilename();
+        String realpath = servletContext.getRealPath(virtualpath);
         File file = new File(realpath);
         if(!file.isFile()){
             return new ResponseEntity(false,"找不到该文件了,请联系管理员");
@@ -121,7 +126,7 @@ public class FileController {
 
             response.setCharacterEncoding("utf-8");
             response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", "attachment;fileName=" + attachment.getRealname());
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(attachment.getRealname(),"UTF-8"));
             ServletOutputStream os = response.getOutputStream();
 
             FileInputStream fis = new FileInputStream(file);
@@ -130,6 +135,8 @@ public class FileController {
             while((len=fis.read(bytes))!=-1){
                 os.write(bytes,0,len);
             }
+            os.close();
+            fis.close();
             return new ResponseEntity(true,"下载成功");
 
         } catch (FileNotFoundException e) {

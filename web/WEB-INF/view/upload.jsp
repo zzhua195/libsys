@@ -29,9 +29,9 @@
             var resp = $.parseJSON(text);
             if(resp.flag){
                 alert("上传成功");
-                $("#mf").val('');
+                window.location.href = '/file/toFile';
             }else{
-                alert("上传失败，请重试");
+                alert(resp.msg);
             }
         });
     });

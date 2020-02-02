@@ -40,7 +40,9 @@
                 <td align="center">${attachment.filesize}</td>
                 <td align="center">${attachment.uploader}</td>
                 <td align="center"><fmt:formatDate value="${attachment.uploadtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td><a href="javascript:void(0)" onclick="download()">下载</a></td>
+                <td>
+                    <a target="target" href="/file/download?id=${attachment.id}">下载</a>
+                </td>
             </tr>
 
         </c:forEach>
@@ -52,9 +54,16 @@
     </c:otherwise>
 </c:choose>
 </table>
+    <iframe style="display: none;" id="target" name="target"></iframe>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-3.3.1.min.js"></script>
-<script>
-
-</script>
+    <script>
+        $("#target").on('load',function () {
+            var text = $(this).contents().find("body").text();
+            var json = $.parseJSON(text);
+            if(!json.flag){
+                alert(json.msg);
+            }
+        });
+    </script>
 </body>
 </html>
