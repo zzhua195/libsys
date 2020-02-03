@@ -26,4 +26,12 @@
     <!--默认tomcat处理-->
     <mvc:default-servlet-handler/>
 
+    <!--拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.zzhua.intercepter.LoginIntercpter"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>
